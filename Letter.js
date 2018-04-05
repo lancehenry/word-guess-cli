@@ -24,5 +24,5 @@ var Letter = function(character) {
 module.exports = Letter;
 
 // Test the constructor
-// var test = new Letter("a");
+// var test = new Letter("c");
 // test.showCharacter();
