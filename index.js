@@ -11,7 +11,6 @@
 // Guesses remaining decreases after each guess
 // What happens when user runs out of guess?
 // What happens when user gets the word correct?
-// Wins, Losses display (maybe)
 
 var Word = require("./Word");
 var Letter = require("./Letter");
@@ -24,6 +23,7 @@ var wordList = ["targaryen", "stark", "martell", "lannister", "baratheon", "tyre
 var wins = 0;
 var losses = 0;
 var guessesRemaining = 10;
+var lettersGuessed = [];
 
 // User prompt (inquirer - 26-Inquirer_Users from class)
 function startGame() {
@@ -35,21 +35,42 @@ function startGame() {
             name: "play"
         }
     ]).then(function(user) {
-        console.log("User said: " + user.play + "\n");
-
+        // console.log("User said: " + user.play + "\n");
         if (user.play == "Yes") {
-            console.log("Let's Play!")
+            console.log("\nLet's Play!\n")
             gamePlay();
         } else {
-            console.log("Winter has come. Goodbye.\n");
+            console.log("\nWinter has come. Goodbye.\n");
+            startGame();
         }
     })
 };
 
 function gamePlay() {
-    var selectedWord = wordList[Math.floor(Math.random() * wordList.length)];
-    console.log("Selected word: " + selectedWord);
+    var randomWord = wordList[Math.floor(Math.random() * wordList.length)].toUpperCase();
+    console.log("------------------------------------")
+    console.log("Wins: " + wins);
+    console.log("Losses: " + losses);
+    console.log("Guesses Remaining: " + guessesRemaining);
+    console.log("------------------------------------\n")
+    console.log("Selected word: " + randomWord + "\n");
 
+    var selectedWord = new Word (randomWord);
+    selectedWord.splitWord();
+    selectedWord.getLetters();
+
+    guessLetter();
+};
+
+function guessLetter() {
+    inquirer.prompt([
+        {
+            name: "letter",
+            message: "Guess a letter?"
+        }
+    ]).then(function(answer) {
+        console.log("You guessed: " + answer.letter);
+    })
 }
 
 startGame();
