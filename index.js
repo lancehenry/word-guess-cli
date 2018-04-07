@@ -47,7 +47,7 @@ function startGame() {
 };
 
 function gamePlay() {
-    var randomWord = wordList[Math.floor(Math.random() * wordList.length)].toUpperCase();
+    var randomWord = wordList[Math.floor(Math.random() * wordList.length)];
     console.log("------------------------------------")
     console.log("Wins: " + wins);
     console.log("Losses: " + losses);
@@ -63,14 +63,27 @@ function gamePlay() {
 };
 
 function guessLetter() {
-    inquirer.prompt([
-        {
-            name: "letter",
-            message: "Guess a letter?"
-        }
-    ]).then(function(answer) {
-        console.log("You guessed: " + answer.letter);
-    })
+    if (guessesRemaining > 0) {
+        inquirer.prompt([
+            {
+                name: "letter",
+                message: "Guess a letter?"
+            }
+        ]).then(function(answer) {
+            if (lettersGuessed.indexOf(answer.letter) < -1) {
+                console.log("You already guessed that letter.");
+                guessLetter();
+            } else if (lettersGuessed.indexOf(answer.letter) == -1) {
+                lettersGuessed.push(answer.letter);
+                console.log("You guessed: " + answer.letter);
+                console.log(lettersGuessed);
+                guessLetter();
+            }
+        })
+    } else {
+        console.log("\nWinter has come. Goodbye.\n");
+        startGame();
+    }
 }
 
 startGame();
